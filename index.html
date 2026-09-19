@@ -103,6 +103,9 @@
     padding-block: 12px;
   }
   .toolbar-inner{ display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  /* デスクトップでは各selectをツールバーの行に直接並べる */
+  .filters{ display: contents; }
+  .filter-toggle{ display: none; }
   .search{
     flex: 1 1 240px; min-width: 0; position: relative; display: flex; align-items: center;
   }
@@ -172,7 +175,7 @@
 
   .videos{ display: flex; flex-direction: column; }
   .video{
-    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    display: flex; align-items: center; gap: 12px; flex-wrap: nowrap;
     padding: 8px 10px; margin-inline: -10px; border-radius: var(--radius);
     font-size: 13px;
   }
@@ -181,7 +184,7 @@
     flex: 0 0 auto; font-variant-numeric: tabular-nums; color: var(--ink-3); font-size: 12.5px;
     min-width: 88px;
   }
-  .v-place{ flex: 1 1 200px; display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline; min-width: 0; }
+  .v-place{ flex: 1 1 auto; display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline; min-width: 0; }
   .v-venue{ font-weight: 600; }
   .v-event{
     font-size: 11.5px; color: var(--ink-2); background: var(--chip-bg);
@@ -209,9 +212,50 @@
   footer a:hover{ color: var(--accent); }
 
   @media (max-width: 720px){
-    .song{ grid-template-columns: 1fr; gap: 14px; }
-    .watch{ margin-left: 0; }
-    select{ flex: 1 1 auto; max-width: none; }
+    .container{ padding-inline: 16px; }
+
+    /* 見出し部分をコンパクトに */
+    .masthead{ padding-block: 26px 18px; }
+    .lede{ font-size: 13.5px; line-height: 1.7; }
+    .totals{ margin-top: 16px; padding-top: 14px; gap: 16px; }
+    .total b{ font-size: 20px; }
+
+    /* 絞り込みは開閉式にして、通常は検索窓だけを固定表示 */
+    .toolbar{ padding-block: 10px; }
+    .toolbar-inner{ gap: 8px; flex-wrap: wrap; }
+    .search{ flex: 1 1 0; min-width: 0; }
+    .filter-toggle{
+      display: inline-flex; align-items: center; gap: 6px; flex: 0 0 auto;
+      font: inherit; font-size: 13px; font-weight: 600; color: var(--ink-2);
+      background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+      padding: 9px 12px; cursor: pointer; white-space: nowrap;
+    }
+    .filter-toggle[aria-expanded="true"]{ background: var(--ink); color: var(--page); border-color: var(--ink); }
+    .filter-toggle .badge{
+      min-width: 17px; height: 17px; padding-inline: 4px; border-radius: 999px;
+      background: var(--accent); color: #fff; font-size: 11px; font-weight: 700;
+      display: none; place-items: center; line-height: 1;
+    }
+    .filter-toggle .badge.on{ display: grid; }
+    .filters{
+      display: none; flex-basis: 100%; width: 100%; gap: 8px; margin-top: 2px;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .filters.open{ display: grid; }
+    .filters select{ width: 100%; max-width: none; }
+    .filters .ghost-btn{ grid-column: 1 / -1; }
+
+    /* 楽曲は縦積み、映像は1行に収める */
+    .song{ grid-template-columns: 1fr; gap: 12px; padding-block: 20px; }
+    .song-title{ font-size: 18px; }
+    .video{ gap: 8px; padding-block: 9px; align-items: flex-start; }
+    .v-date{ min-width: 74px; font-size: 12px; padding-top: 1px; }
+    .watch{ padding: 3px 8px; }
+    .watch .watch-text{
+      position: absolute; width: 1px; height: 1px; overflow: hidden;
+      clip-path: inset(50%); white-space: nowrap;
+    }
+    .meta-line{ padding-top: 16px; }
   }
   @media (prefers-reduced-motion: reduce){ *{ transition: none !important; } }
 
@@ -238,14 +282,19 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
       <input type="search" id="q" placeholder="曲名・人名・会場・イベントを検索" autocomplete="off">
     </label>
-    <select id="f-ly" aria-label="作詞で絞り込み"></select>
-    <select id="f-co" aria-label="作曲で絞り込み"></select>
-    <select id="f-ar" aria-label="編曲で絞り込み"></select>
-    <select id="f-ch" aria-label="振付で絞り込み"></select>
-    <select id="f-venue" aria-label="会場で絞り込み"></select>
-    <select id="f-event" aria-label="イベントで絞り込み"></select>
-    <select id="f-year" aria-label="年で絞り込み"></select>
-    <button class="ghost-btn" id="reset" type="button">リセット</button>
+    <button class="filter-toggle" id="filterToggle" type="button" aria-expanded="false" aria-controls="filters">
+      絞り込み<span class="badge" id="filterBadge">0</span>
+    </button>
+    <div class="filters" id="filters">
+      <select id="f-ly" aria-label="作詞で絞り込み"></select>
+      <select id="f-co" aria-label="作曲で絞り込み"></select>
+      <select id="f-ar" aria-label="編曲で絞り込み"></select>
+      <select id="f-ch" aria-label="振付で絞り込み"></select>
+      <select id="f-venue" aria-label="会場で絞り込み"></select>
+      <select id="f-event" aria-label="イベントで絞り込み"></select>
+      <select id="f-year" aria-label="年で絞り込み"></select>
+      <button class="ghost-btn" id="reset" type="button">リセット</button>
+    </div>
   </div>
   <div class="container chips" id="chips"></div>
 </div>
@@ -499,6 +548,11 @@
 
     renderChips(act, q);
 
+    var activeCount = Object.keys(act).length;
+    var badge = $("filterBadge");
+    badge.textContent = activeCount;
+    badge.classList.toggle("on", activeCount > 0);
+
     if (!visible.length){
       list.innerHTML = "";
       empty.hidden = false;
@@ -523,7 +577,8 @@
             + (v.event ? '<button class="link-btn v-event" data-key="event" data-value="' + esc(v.event) + '">' + esc(v.event) + "</button>" : "")
             + (v.note ? '<span class="v-event" style="background:transparent;padding-inline:0;color:var(--ink-3)">' + esc(v.note) + "</span>" : "")
           + "</span>"
-          + '<a class="watch" href="' + X + v.id + '" target="_blank" rel="noopener">Xで見る ↗</a>'
+          + '<a class="watch" href="' + X + v.id + '" target="_blank" rel="noopener" aria-label="' + esc(fmtDate(v.d) + " " + (v.venue || "")) + " の映像をXで見る\">"
+            + '<span class="watch-text">Xで見る</span> ↗</a>'
           + "</div>";
       }).join("");
 
@@ -595,6 +650,13 @@
     FIELDS.forEach(function(f){ $(f.sel).value = ""; });
     sortSel.value = "recent";
     render();
+  });
+
+  /* スマホでは絞り込みパネルを開閉式にする */
+  var toggle = $("filterToggle"), filters = $("filters");
+  toggle.addEventListener("click", function(){
+    var open = filters.classList.toggle("open");
+    toggle.setAttribute("aria-expanded", open ? "true" : "false");
   });
 
   render();
