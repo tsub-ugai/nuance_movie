@@ -1,0 +1,604 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light dark">
+<title>ヌュ動画帳 — NUANCE ライブ映像アーカイブ</title>
+<meta name="description" content="アイドルグループ NUANCE（ヌュアンス）の公式Xに投稿されたライブ映像を、楽曲ごとのクレジット（作詞・作曲・編曲・振付）とあわせてまとめた非公式アーカイブ。会場・イベント・年で絞り込めます。">
+<meta property="og:type" content="website">
+<meta property="og:title" content="ヌュ動画帳 — NUANCE ライブ映像アーカイブ">
+<meta property="og:description" content="NUANCE（ヌュアンス）のライブ映像を、楽曲ごとのクレジットと公演情報で絞り込めるファンアーカイブ。">
+<meta property="og:url" content="https://tsub-ugai.github.io/nuance_movie/">
+<meta name="twitter:card" content="summary">
+<link rel="canonical" href="https://tsub-ugai.github.io/nuance_movie/">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A5%81%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --page:      #f7f7f5;
+    --surface:   #ffffff;
+    --ink:       #2f2c28;
+    --ink-2:     #575350;
+    --ink-3:     #8d8880;
+    --line:      #e9e7e2;
+    --line-2:    #f1efeb;
+    --hover:     #faf9f7;
+    --accent:    #e03b57;
+    --accent-2:  #b82a43;
+    --accent-bg: #fdeff2;
+    --chip-bg:   #f3f2ef;
+    --radius:    8px;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --page:      #191918;
+      --surface:   #201f1e;
+      --ink:       #ecebe8;
+      --ink-2:     #b5b1aa;
+      --ink-3:     #8b8780;
+      --line:      #332f2c;
+      --line-2:    #2a2726;
+      --hover:     #262423;
+      --accent:    #ff7189;
+      --accent-2:  #ff96a7;
+      --accent-bg: #3a2126;
+      --chip-bg:   #2b2927;
+    }
+  }
+  :root[data-theme="dark"]{
+    --page:      #191918;
+    --surface:   #201f1e;
+    --ink:       #ecebe8;
+    --ink-2:     #b5b1aa;
+    --ink-3:     #8b8780;
+    --line:      #332f2c;
+    --line-2:    #2a2726;
+    --hover:     #262423;
+    --accent:    #ff7189;
+    --accent-2:  #ff96a7;
+    --accent-bg: #3a2126;
+    --chip-bg:   #2b2927;
+  }
+
+  *{ box-sizing: border-box; }
+  body{
+    margin: 0;
+    background: var(--page);
+    color: var(--ink);
+    font-family: 'Plus Jakarta Sans', 'Zen Kaku Gothic New', 'Hiragino Kaku Gothic ProN', system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+  .container{ max-width: 980px; margin-inline: auto; padding-inline: 20px; }
+  a{ color: inherit; }
+
+  /* ===== masthead ===== */
+  .masthead{ padding-block: 44px 26px; }
+  .kicker{
+    font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
+    color: var(--accent); margin: 0 0 10px;
+  }
+  .masthead h1{
+    margin: 0; font-size: clamp(30px, 5vw, 42px); font-weight: 800; letter-spacing: -.01em;
+    line-height: 1.15; text-wrap: balance;
+  }
+  .lede{ margin: 12px 0 0; color: var(--ink-2); font-size: 14.5px; line-height: 1.75; }
+  .totals{
+    display: flex; gap: 22px; margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line);
+    flex-wrap: wrap;
+  }
+  .total b{ font-size: 24px; font-weight: 800; font-variant-numeric: tabular-nums; letter-spacing: -.01em; }
+  .total span{ font-size: 12px; color: var(--ink-3); margin-left: 6px; }
+
+  /* ===== toolbar ===== */
+  .toolbar{
+    position: sticky; top: env(safe-area-inset-top, 0px); z-index: 20;
+    background: color-mix(in srgb, var(--page) 88%, transparent);
+    backdrop-filter: saturate(1.6) blur(10px);
+    border-block: 1px solid var(--line);
+    padding-block: 12px;
+  }
+  .toolbar-inner{ display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+  .search{
+    flex: 1 1 240px; min-width: 0; position: relative; display: flex; align-items: center;
+  }
+  .search svg{ position: absolute; left: 11px; width: 15px; height: 15px; color: var(--ink-3); pointer-events: none; }
+  .search input{
+    width: 100%; font: inherit; font-size: 14px; color: var(--ink);
+    background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 9px 12px 9px 33px;
+  }
+  .search input::placeholder{ color: var(--ink-3); }
+  select{
+    font: inherit; font-size: 13px; color: var(--ink); background-color: var(--surface);
+    border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 9px 28px 9px 11px; appearance: none; cursor: pointer; max-width: 180px;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238d8880' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 9px center; background-size: 14px;
+  }
+  select:hover, .search input:hover{ border-color: var(--ink-3); }
+  input:focus-visible, select:focus-visible, button:focus-visible, a:focus-visible{
+    outline: 2px solid var(--accent); outline-offset: 1px;
+  }
+  .ghost-btn{
+    font: inherit; font-size: 13px; font-weight: 600; color: var(--ink-2);
+    background: transparent; border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 9px 13px; cursor: pointer;
+  }
+  .ghost-btn:hover{ background: var(--hover); color: var(--ink); }
+
+  .chips{ display: flex; flex-wrap: wrap; gap: 6px; padding-top: 10px; }
+  .chips:empty{ display: none; }
+  .chip{
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 600; color: var(--accent-2);
+    background: var(--accent-bg); border-radius: 999px; padding: 4px 6px 4px 11px;
+  }
+  .chip button{
+    all: unset; cursor: pointer; width: 16px; height: 16px; border-radius: 50%;
+    display: grid; place-items: center; font-size: 14px; line-height: 1; opacity: .75;
+  }
+  .chip button:hover{ opacity: 1; background: color-mix(in srgb, var(--accent) 18%, transparent); }
+
+  /* ===== results ===== */
+  .meta-line{
+    font-size: 12.5px; color: var(--ink-3); padding-block: 20px 6px;
+    display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap;
+  }
+  .list{ padding-bottom: 20px; }
+  .song{
+    display: grid; grid-template-columns: minmax(200px, 300px) 1fr; gap: 10px 32px;
+    padding-block: 22px; border-top: 1px solid var(--line);
+  }
+  .song:last-child{ border-bottom: 1px solid var(--line); }
+  .song-title{
+    font-size: 19px; font-weight: 700; letter-spacing: -.005em; line-height: 1.35; margin: 0 0 9px;
+    text-wrap: balance;
+  }
+  .credits{ display: flex; flex-direction: column; gap: 3px; }
+  .credit{ display: flex; gap: 9px; font-size: 12.5px; align-items: baseline; }
+  .credit dt{ flex: 0 0 34px; color: var(--ink-3); font-weight: 500; }
+  .credit dd{ margin: 0; }
+  .link-btn{
+    all: unset; cursor: pointer; color: var(--ink-2); font-weight: 500;
+    border-bottom: 1px solid transparent; line-height: 1.4;
+  }
+  .link-btn:hover{ color: var(--accent); border-bottom-color: color-mix(in srgb, var(--accent) 45%, transparent); }
+  .song-note{ margin: 9px 0 0; font-size: 11.5px; color: var(--ink-3); line-height: 1.5; }
+
+  .videos{ display: flex; flex-direction: column; }
+  .video{
+    display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+    padding: 8px 10px; margin-inline: -10px; border-radius: var(--radius);
+    font-size: 13px;
+  }
+  .video:hover{ background: var(--hover); }
+  .v-date{
+    flex: 0 0 auto; font-variant-numeric: tabular-nums; color: var(--ink-3); font-size: 12.5px;
+    min-width: 88px;
+  }
+  .v-place{ flex: 1 1 200px; display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline; min-width: 0; }
+  .v-venue{ font-weight: 600; }
+  .v-event{
+    font-size: 11.5px; color: var(--ink-2); background: var(--chip-bg);
+    padding: 2px 8px; border-radius: 999px; font-weight: 500;
+  }
+  .v-event:hover{ background: var(--accent-bg); color: var(--accent-2); }
+  .watch{
+    flex: 0 0 auto; margin-left: auto; display: inline-flex; align-items: center; gap: 5px;
+    font-size: 12.5px; font-weight: 700; color: var(--accent); text-decoration: none;
+    padding: 4px 10px; border-radius: 999px;
+  }
+  .watch:hover{ background: var(--accent-bg); }
+
+  .empty{
+    text-align: center; padding: 70px 20px; color: var(--ink-3);
+    border-top: 1px solid var(--line);
+  }
+  .empty strong{ display: block; color: var(--ink); font-size: 15px; margin-bottom: 6px; }
+
+  footer{
+    border-top: 1px solid var(--line); margin-top: 10px;
+    padding-block: 26px 48px; font-size: 12px; color: var(--ink-3); line-height: 1.8;
+  }
+  footer a{ color: var(--ink-2); text-decoration: underline; text-underline-offset: 2px; }
+  footer a:hover{ color: var(--accent); }
+
+  @media (max-width: 720px){
+    .song{ grid-template-columns: 1fr; gap: 14px; }
+    .watch{ margin-left: 0; }
+    select{ flex: 1 1 auto; max-width: none; }
+  }
+  @media (prefers-reduced-motion: reduce){ *{ transition: none !important; } }
+
+  img{ max-width: 100%; }
+  [hidden]{ display: none !important; }
+</style>
+</head>
+
+<body>
+<header class="masthead container">
+  <p class="kicker">NUANCE ／ ヌュアンス</p>
+  <h1>ヌュ動画帳</h1>
+  <p class="lede">公式X（@nuance_official）が投稿したライブ映像のアーカイブ。楽曲ごとにクレジットをまとめ、その曲が収録された映像を公演単位で並べています。人名・会場・イベント名はクリックでそのまま絞り込めます。</p>
+  <div class="totals">
+    <div class="total"><b id="tSongs">0</b><span>曲</span></div>
+    <div class="total"><b id="tVideos">0</b><span>本の映像</span></div>
+    <div class="total"><b id="tYears">0</b><span>年分</span></div>
+  </div>
+</header>
+
+<div class="toolbar">
+  <div class="container toolbar-inner">
+    <label class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m21 21-4.3-4.3"/></svg>
+      <input type="search" id="q" placeholder="曲名・人名・会場・イベントを検索" autocomplete="off">
+    </label>
+    <select id="f-ly" aria-label="作詞で絞り込み"></select>
+    <select id="f-co" aria-label="作曲で絞り込み"></select>
+    <select id="f-ar" aria-label="編曲で絞り込み"></select>
+    <select id="f-ch" aria-label="振付で絞り込み"></select>
+    <select id="f-venue" aria-label="会場で絞り込み"></select>
+    <select id="f-event" aria-label="イベントで絞り込み"></select>
+    <select id="f-year" aria-label="年で絞り込み"></select>
+    <button class="ghost-btn" id="reset" type="button">リセット</button>
+  </div>
+  <div class="container chips" id="chips"></div>
+</div>
+
+<main class="container">
+  <div class="meta-line">
+    <span id="count"></span>
+    <label>並び順
+      <select id="sort" aria-label="並び順">
+        <option value="recent">映像が新しい順</option>
+        <option value="most">映像が多い順</option>
+        <option value="title">曲名順</option>
+      </select>
+    </label>
+  </div>
+  <div class="list" id="list"></div>
+  <div class="empty" id="empty" hidden>
+    <strong>該当する映像がありません</strong>
+    条件をひとつ外すか、別のキーワードで試してみてください。
+  </div>
+</main>
+
+<footer class="container">
+  出典：X（旧Twitter）<a href="https://x.com/nuance_official" target="_blank" rel="noopener">@nuance_official</a> の投稿（2023年7月〜2026年9月）。クレジットは各投稿の表記に基づく非公式のファンアーカイブです。<br>
+  「曲名＋作詞・作曲者名」を明記した投稿が確認できるのは2023年7月以降のため、それ以前の映像は収録していません。
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  var X = "https://x.com/nuance_official/status/";
+
+  // 楽曲ごとにクレジットを集約。videos は同じ曲が映っている公演映像。
+  var SONGS = [
+    { t:"ハルシオン", ly:"オレノグラフィティ", co:"オレノグラフィティ", ch:"いどみん", videos:[
+      { d:"2026-09-10", venue:"下北沢シャングリラ", event:"Creora", id:"2100789929957847340" }
+    ]},
+    { t:"ハーパームーン", ly:"佐藤嘉風", co:"佐藤嘉風", videos:[
+      { d:"2026-09-10", venue:"下北沢シャングリラ", event:"Creora", id:"2100494967450038414" },
+      { d:"2026-08-11", venue:"SHIBUYA CYCLONE", event:"ヌュナッス", id:"2087186422075957616" }
+    ]},
+    { t:"ハレンチベイベ", ly:"漣研太郎（ピストルモンキー（ズ））", co:"漣研太郎（ピストルモンキー（ズ））", ar:"炭竃智弘", videos:[
+      { d:"2026-09-10", venue:"下北沢シャングリラ", event:"Creora", id:"2100421986631680491" },
+      { d:"2026-08-11", venue:"SHIBUYA CYCLONE", event:"ヌュナッス", id:"2087185246047613297" },
+      { d:"2026-06-25", venue:"新宿MARZ", event:"RTNY15", id:"2070443674346135853" }
+    ]},
+    { t:"highlight", ly:"森尻有希子（yukiko／miyumiyu）", co:"森尻有希子（yukiko／miyumiyu）", ar:"佐藤嘉風", videos:[
+      { d:"2026-09-10", venue:"下北沢シャングリラ", event:"Creora", id:"2100234502282838035" },
+      { d:"2025-10-25", venue:"新宿MARZ", event:"RTNY 6.5", id:"1983858926903865501" }
+    ]},
+    { t:"雨粒", ly:"森尻有希子（yukiko／miyumiyu）", co:"森尻有希子（yukiko／miyumiyu）", ar:"佐藤嘉風", videos:[
+      { d:"2026-09-10", venue:"下北沢シャングリラ", event:"Creora", id:"2100233794582393334" },
+      { d:"2026-08-13", venue:"新宿MARZ", event:"RTNY17", id:"2089362895289360659", note:"「ゆれてみて」との2曲収録" },
+      { d:"2025-06-14", venue:"RAD JAM JAPAN EXPO", event:"", id:"1933853831013773691" }
+    ]},
+    { t:"ゆれてみて", ly:"ayaping", co:"LUVRAW", videos:[
+      { d:"2026-08-13", venue:"新宿MARZ", event:"RTNY17", id:"2089362895289360659", note:"「雨粒」との2曲収録" },
+      { d:"2026-06-25", venue:"新宿MARZ", event:"RTNY15", id:"2068347725511573626" }
+    ]},
+    { t:"last a way", ly:"森尻有希子（yukiko／miyumiyu）", co:"森尻有希子（yukiko／miyumiyu）", ar:"円山天使", videos:[
+      { d:"2026-08-11", venue:"SHIBUYA CYCLONE", event:"ヌュナッス", id:"2087542055132405800" },
+      { d:"2025-10-17", venue:"shibuya REX", event:"シュルレアリスム vol.2", id:"1979193542225662248" },
+      { d:"2025-06-14", venue:"RAD JAM JAPAN EXPO", event:"", id:"1937478838822510689" }
+    ]},
+    { t:"Mellow Dancer", ly:"GOOD LOVIN'", co:"GOOD LOVIN'", ar:"佐藤嘉風", videos:[
+      { d:"2026-08-11", venue:"SHIBUYA CYCLONE", event:"ヌュナッス", id:"2087183661552869834" },
+      { d:"2025-10-05", venue:"shibuya Spotify O-EAST", event:"", id:"1974836980937523441" }
+    ]},
+    { t:"サーカスの来ない街", ly:"kaoru", co:"kaoru", ar:"佐藤嘉風", videos:[
+      { d:"2026-08-11", venue:"SHIBUYA CYCLONE", event:"ヌュナッス", id:"2088277390623691212" },
+      { d:"2025-11-04", venue:"下北沢251", event:"アネモネ", id:"1986401074702655757" }
+    ]},
+    { t:"ピオニー", ly:"志賀ラミー（絶対忘れるな）", co:"志賀ラミー（絶対忘れるな）", ar:"佐藤嘉風", videos:[
+      { d:"2026-08-05", venue:"渋谷近未来会館", event:"緊急開催エンジョイナス!!", id:"2085753377192050693" },
+      { d:"2025-10-25", venue:"新宿MARZ", event:"RTNY 6.5", id:"1982688714905260065" }
+    ]},
+    { t:"ラ・ブ・ミ・ラ・コ", ly:"宮嶋淳子", co:"炭竃智弘", ch:"Μёg", extra:"guitar：松葉由行", videos:[
+      { d:"2026-07-22", venue:"新宿MARZ", event:"RTNY16", id:"2080261646459568470", note:"YouTube版 LIVE MOVIE へのリンク付き" }
+    ]},
+    { t:"bund drive", ly:"佐藤嘉風", co:"佐藤嘉風", videos:[
+      { d:"2026-07-22", venue:"新宿MARZ", event:"RTNY16", id:"2081741399108509908" },
+      { d:"2025-11-11", venue:"高円寺HIGH", event:"永久番線", id:"1988822363903762517" }
+    ]},
+    { t:"ルカルカ", ly:"オレノグラフィティ", co:"オレノグラフィティ", videos:[
+      { d:"2026-07-26", venue:"WWWX", event:"MAVERICK 2", id:"2081700173953245629" }
+    ]},
+    { t:"シャラララシャララ", ly:"佐藤嘉風", co:"佐藤嘉風", videos:[
+      { d:"2026-06-21", venue:"渋谷音楽堂", event:"Spice it Up", id:"2069938381602304024" }
+    ]},
+    { t:"sky balloon", ly:"佐藤嘉風", co:"佐藤嘉風", videos:[
+      { d:"2026-06-21", venue:"渋谷音楽堂", event:"Spice it Up", id:"2069036343322402834" },
+      { d:"2025-10-05", venue:"shibuya Spotify O-EAST", event:"", id:"1974844526675067305" },
+      { d:"2025-06-15", venue:"RAD JAM JAPAN EXPO", event:"", id:"1934984363785203996" }
+    ]},
+    { t:"特急 元町・中華街行き27分", ly:"児玉雨子", co:"佐藤嘉風", ch:"いどみん",
+      note:"2026年6月の投稿では「作詞・作曲：佐藤嘉風」と表記。ここでは詳細な2025年6月の表記を採用。", videos:[
+      { d:"2026-06-21", venue:"渋谷音楽堂", event:"Spice it Up", id:"2069036294563598821" },
+      { d:"2025-06-10", venue:"新宿MARZ", event:"", id:"1933520678218871220" }
+    ]},
+    { t:"ai-oi", ly:"オレノグラフィティ", co:"オレノグラフィティ", videos:[
+      { d:"2026-05-10", venue:"OSAKA MUSE", event:"MAWALOOP2026", id:"2053479128201150851" }
+    ]},
+    { t:"ユメLogicガール", ly:"宮嶋淳子", co:"佐藤嘉風", videos:[
+      { d:"2026-01-05", venue:"新宿MARZ", event:"NEW ORDER 新春", id:"2008391656304001126" }
+    ]},
+    { t:"赤レンガ空中さんぽ", ly:"佐藤嘉風", co:"佐藤嘉風", videos:[
+      { d:"2025-11-04", venue:"下北沢251", event:"アネモネ", id:"1986418289224954077" }
+    ]},
+    { t:"ミライサーカス", ly:"佐藤嘉風", co:"佐藤嘉風", videos:[
+      { d:"2025-10-25", venue:"新宿MARZ", event:"RTNY 6.5", id:"1982108720776802349" }
+    ]},
+    { t:"cosmo", ly:"佐藤嘉風", co:"佐藤嘉風", videos:[
+      { d:"2025-10-02", venue:"shibuya QUATTRO", event:"", id:"1979027086044991821" }
+    ]},
+    { t:"Ocha cha cha chinatown", ly:"佐藤嘉風", co:"佐藤嘉風", videos:[
+      { d:"2025-10-02", venue:"shibuya QUATTRO", event:"", id:"1975043533406130445" }
+    ]},
+    { t:"sanzan", ly:"森尻有希子（yukiko／miyumiyu）", co:"森尻有希子（yukiko／miyumiyu）", ar:"佐藤嘉風", videos:[
+      { d:"2025-10-02", venue:"shibuya QUATTRO", event:"", id:"1974474591113486738" },
+      { d:"2025-06-07", venue:"新宿MARZ", event:"", id:"1932104588230000758" }
+    ]},
+    { t:"テキーラサンライズ", ly:"オレノグラフィティ", co:"オレノグラフィティ", ar:"佐藤嘉風", videos:[
+      { d:"2025-10-02", venue:"shibuya QUATTRO", event:"", id:"1974466022980874740", note:"「セツナシンドローム」との2曲収録" }
+    ]},
+    { t:"セツナシンドローム", ly:"佐藤嘉風", co:"佐藤嘉風", videos:[
+      { d:"2025-10-02", venue:"shibuya QUATTRO", event:"", id:"1974466022980874740", note:"「テキーラサンライズ」との2曲収録" },
+      { d:"2024-04-27", venue:"幕張メッセ", event:"ニコニコ超会議2024", id:"1784177111999357390" }
+    ]},
+    { t:"タイムマジックロンリー", ly:"佐藤嘉風", co:"佐藤嘉風", videos:[
+      { d:"2025-10-02", venue:"shibuya QUATTRO", event:"", id:"1974399639391711438" }
+    ]},
+    { t:"悲しみダンス", ly:"森尻有希子（yukiko／miyumiyu）", co:"森尻有希子（yukiko／miyumiyu）", ar:"佐藤嘉風", videos:[
+      { d:"2025-06-07", venue:"新宿MARZ", event:"", id:"1931354723917201471" }
+    ]},
+    { t:"colonial style", ly:"佐藤嘉風", co:"佐藤嘉風", ch:"いどみん", videos:[
+      { d:"2023-07-21", venue:"", event:"", id:"1682061079759966208" }
+    ]}
+  ];
+
+  var FIELDS = [
+    { sel:"f-ly",    key:"ly",    label:"作詞", scope:"song", all:"作詞：すべて" },
+    { sel:"f-co",    key:"co",    label:"作曲", scope:"song", all:"作曲：すべて" },
+    { sel:"f-ar",    key:"ar",    label:"編曲", scope:"song", all:"編曲：すべて" },
+    { sel:"f-ch",    key:"ch",    label:"振付", scope:"song", all:"振付：すべて" },
+    { sel:"f-venue", key:"venue", label:"会場", scope:"video", all:"会場：すべて" },
+    { sel:"f-event", key:"event", label:"イベント", scope:"video", all:"イベント：すべて" },
+    { sel:"f-year",  key:"year",  label:"年", scope:"video", all:"年：すべて" }
+  ];
+
+  var $ = function(id){ return document.getElementById(id); };
+  var qInput = $("q"), list = $("list"), empty = $("empty"),
+      countEl = $("count"), chipsEl = $("chips"), sortSel = $("sort");
+
+  function esc(s){
+    return String(s == null ? "" : s).replace(/[&<>"']/g, function(c){
+      return { "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;", "'":"&#39;" }[c];
+    });
+  }
+  function fmtDate(iso){
+    var p = iso.split("-");
+    return p[0] + "." + p[1] + "." + p[2];
+  }
+  function videoYear(v){ return v.d.slice(0, 4); }
+  function latestDate(song){
+    return song.videos.reduce(function(m, v){ return v.d > m ? v.d : m; }, "");
+  }
+
+  /* ---- totals ---- */
+  var allVideos = SONGS.reduce(function(n, s){ return n + s.videos.length; }, 0);
+  var allYears = new Set();
+  SONGS.forEach(function(s){ s.videos.forEach(function(v){ allYears.add(videoYear(v)); }); });
+  $("tSongs").textContent = SONGS.length;
+  $("tVideos").textContent = allVideos;
+  $("tYears").textContent = allYears.size;
+
+  /* ---- build selects ---- */
+  function optionValues(f){
+    var set = new Set();
+    SONGS.forEach(function(s){
+      if (f.scope === "song"){
+        if (s[f.key]) set.add(s[f.key]);
+      } else {
+        s.videos.forEach(function(v){
+          var val = f.key === "year" ? videoYear(v) : v[f.key];
+          if (val) set.add(val);
+        });
+      }
+    });
+    var arr = Array.from(set);
+    if (f.key === "year") arr.sort().reverse();
+    else arr.sort(function(a, b){ return a.localeCompare(b, "ja"); });
+    return arr;
+  }
+  FIELDS.forEach(function(f){
+    var sel = $(f.sel);
+    sel.appendChild(new Option(f.all, ""));
+    optionValues(f).forEach(function(v){ sel.appendChild(new Option(v, v)); });
+    sel.addEventListener("change", render);
+  });
+
+  function activeFilters(){
+    var a = {};
+    FIELDS.forEach(function(f){ var v = $(f.sel).value; if (v) a[f.key] = v; });
+    return a;
+  }
+
+  /* ---- render ---- */
+  function render(){
+    var q = qInput.value.trim().toLowerCase();
+    var act = activeFilters();
+
+    var visible = [];
+    SONGS.forEach(function(song){
+      var songOk = FIELDS.every(function(f){
+        return f.scope !== "song" || !act[f.key] || song[f.key] === act[f.key];
+      });
+      if (!songOk) return;
+
+      var songHay = [song.t, song.ly, song.co, song.ar, song.ch, song.extra].join(" ").toLowerCase();
+      var songHit = q ? songHay.indexOf(q) !== -1 : true;
+
+      var vids = song.videos.filter(function(v){
+        var vidOk = FIELDS.every(function(f){
+          if (f.scope !== "video" || !act[f.key]) return true;
+          var val = f.key === "year" ? videoYear(v) : v[f.key];
+          return val === act[f.key];
+        });
+        if (!vidOk) return false;
+        if (!q) return true;
+        var vHay = [v.venue, v.event, v.d].join(" ").toLowerCase();
+        return songHit || vHay.indexOf(q) !== -1;
+      });
+
+      if (vids.length) visible.push({ song: song, vids: vids });
+    });
+
+    var mode = sortSel.value;
+    visible.sort(function(a, b){
+      if (mode === "title") return a.song.t.localeCompare(b.song.t, "ja");
+      if (mode === "most"){
+        var diff = b.vids.length - a.vids.length;
+        if (diff) return diff;
+      }
+      return latestDate(b.song).localeCompare(latestDate(a.song));
+    });
+
+    var shownVideos = visible.reduce(function(n, g){ return n + g.vids.length; }, 0);
+    countEl.textContent = visible.length + "曲 ／ " + shownVideos + "本の映像"
+      + (visible.length === SONGS.length && shownVideos === allVideos ? "" : "（全" + SONGS.length + "曲・" + allVideos + "本中）");
+
+    renderChips(act, q);
+
+    if (!visible.length){
+      list.innerHTML = "";
+      empty.hidden = false;
+      return;
+    }
+    empty.hidden = true;
+
+    list.innerHTML = visible.map(function(g){
+      var s = g.song;
+      var credits = "";
+      credits += creditRow("作詞", s.ly, "ly");
+      credits += creditRow("作曲", s.co, "co");
+      credits += creditRow("編曲", s.ar, "ar");
+      credits += creditRow("振付", s.ch, "ch");
+      if (s.extra) credits += '<div class="credit"><dt>その他</dt><dd>' + esc(s.extra) + "</dd></div>";
+
+      var vids = g.vids.slice().sort(function(a, b){ return b.d.localeCompare(a.d); }).map(function(v){
+        return '<div class="video">'
+          + '<span class="v-date">' + fmtDate(v.d) + "</span>"
+          + '<span class="v-place">'
+            + (v.venue ? '<button class="link-btn v-venue" data-key="venue" data-value="' + esc(v.venue) + '">' + esc(v.venue) + "</button>" : '<span class="v-venue" style="color:var(--ink-3)">会場不明</span>')
+            + (v.event ? '<button class="link-btn v-event" data-key="event" data-value="' + esc(v.event) + '">' + esc(v.event) + "</button>" : "")
+            + (v.note ? '<span class="v-event" style="background:transparent;padding-inline:0;color:var(--ink-3)">' + esc(v.note) + "</span>" : "")
+          + "</span>"
+          + '<a class="watch" href="' + X + v.id + '" target="_blank" rel="noopener">Xで見る ↗</a>'
+          + "</div>";
+      }).join("");
+
+      return '<article class="song">'
+        + "<div>"
+          + '<h2 class="song-title">' + esc(s.t) + "</h2>"
+          + '<dl class="credits">' + credits + "</dl>"
+          + (s.note ? '<p class="song-note">※ ' + esc(s.note) + "</p>" : "")
+        + "</div>"
+        + '<div class="videos">' + vids + "</div>"
+        + "</article>";
+    }).join("");
+  }
+
+  function creditRow(label, value, key){
+    if (!value) return "";
+    return '<div class="credit"><dt>' + label + "</dt><dd>"
+      + '<button class="link-btn" data-key="' + key + '" data-value="' + esc(value) + '">'
+      + esc(value) + "</button></dd></div>";
+  }
+
+  function renderChips(act, q){
+    chipsEl.innerHTML = "";
+    FIELDS.forEach(function(f){
+      if (!act[f.key]) return;
+      chipsEl.appendChild(makeChip(f.label + "：" + act[f.key], function(){
+        $(f.sel).value = "";
+        render();
+      }));
+    });
+    if (q){
+      chipsEl.appendChild(makeChip("検索：" + qInput.value.trim(), function(){
+        qInput.value = "";
+        render();
+      }));
+    }
+  }
+  function makeChip(text, onRemove){
+    var chip = document.createElement("span");
+    chip.className = "chip";
+    var label = document.createElement("span");
+    label.textContent = text;
+    var btn = document.createElement("button");
+    btn.type = "button";
+    btn.setAttribute("aria-label", text + " を解除");
+    btn.textContent = "×";
+    btn.addEventListener("click", onRemove);
+    chip.appendChild(label);
+    chip.appendChild(btn);
+    return chip;
+  }
+
+  /* クレジット・会場・イベント名クリックでその条件に絞り込む */
+  list.addEventListener("click", function(e){
+    var btn = e.target.closest(".link-btn");
+    if (!btn) return;
+    var field = FIELDS.filter(function(f){ return f.key === btn.dataset.key; })[0];
+    if (!field) return;
+    var sel = $(field.sel);
+    sel.value = sel.value === btn.dataset.value ? "" : btn.dataset.value;
+    render();
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+
+  qInput.addEventListener("input", render);
+  sortSel.addEventListener("change", render);
+  $("reset").addEventListener("click", function(){
+    qInput.value = "";
+    FIELDS.forEach(function(f){ $(f.sel).value = ""; });
+    sortSel.value = "recent";
+    render();
+  });
+
+  render();
+})();
+</script>
+</body>
+</html>
