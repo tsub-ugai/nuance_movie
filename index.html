@@ -192,17 +192,13 @@
   }
   .v-event:hover{ background: var(--accent-bg); color: var(--accent-2); }
   .watch{
-    flex: 0 0 auto; margin-left: auto; display: inline-flex; align-items: center; gap: 5px;
-    font-size: 12.5px; font-weight: 700; color: var(--accent); text-decoration: none;
-    padding: 4px 9px; border-radius: 999px;
+    flex: 0 0 auto; margin-left: auto; display: inline-grid; place-items: center;
+    width: 28px; height: 28px; border-radius: 50%;
+    color: var(--accent); text-decoration: none;
+    border: 1px solid var(--line); background: var(--surface);
   }
-  .watch svg{ width: 11px; height: 11px; fill: currentColor; flex: 0 0 auto; }
-  .watch .watch-text{
-    text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 3px;
-    text-decoration-color: color-mix(in srgb, var(--accent) 55%, transparent);
-  }
-  .watch:hover{ background: var(--accent-bg); }
-  .watch:hover .watch-text{ text-decoration-color: currentColor; }
+  .watch svg{ width: 12px; height: 12px; fill: currentColor; }
+  .watch:hover{ background: var(--accent); border-color: var(--accent); color: #fff; }
 
   .empty{
     text-align: center; padding: 70px 20px; color: var(--ink-3);
@@ -256,7 +252,7 @@
     .song-title{ font-size: 18px; }
     .video{ gap: 8px; padding-block: 9px; align-items: flex-start; }
     .v-date{ min-width: 74px; font-size: 12px; padding-top: 1px; }
-    .watch{ padding: 3px 7px; gap: 4px; font-size: 12px; }
+    .watch{ width: 30px; height: 30px; }
     .meta-line{ padding-top: 16px; }
   }
   @media (prefers-reduced-motion: reduce){ *{ transition: none !important; } }
@@ -582,7 +578,7 @@
             + (v.note ? '<span class="v-event" style="background:transparent;padding-inline:0;color:var(--ink-3)">' + esc(v.note) + "</span>" : "")
           + "</span>"
           + '<a class="watch" href="' + X + v.id + '" target="_blank" rel="noopener" aria-label="' + esc(fmtDate(v.d) + " " + (v.venue || "")) + " の映像をXで見る\">"
-            + X_ICON + '<span class="watch-text">見る</span></a>'
+            + X_ICON + "</a>"
           + "</div>";
       }).join("");
 
