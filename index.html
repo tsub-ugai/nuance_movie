@@ -194,9 +194,15 @@
   .watch{
     flex: 0 0 auto; margin-left: auto; display: inline-flex; align-items: center; gap: 5px;
     font-size: 12.5px; font-weight: 700; color: var(--accent); text-decoration: none;
-    padding: 4px 10px; border-radius: 999px;
+    padding: 4px 9px; border-radius: 999px;
+  }
+  .watch svg{ width: 11px; height: 11px; fill: currentColor; flex: 0 0 auto; }
+  .watch .watch-text{
+    text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 3px;
+    text-decoration-color: color-mix(in srgb, var(--accent) 55%, transparent);
   }
   .watch:hover{ background: var(--accent-bg); }
+  .watch:hover .watch-text{ text-decoration-color: currentColor; }
 
   .empty{
     text-align: center; padding: 70px 20px; color: var(--ink-3);
@@ -250,11 +256,7 @@
     .song-title{ font-size: 18px; }
     .video{ gap: 8px; padding-block: 9px; align-items: flex-start; }
     .v-date{ min-width: 74px; font-size: 12px; padding-top: 1px; }
-    .watch{ padding: 3px 8px; }
-    .watch .watch-text{
-      position: absolute; width: 1px; height: 1px; overflow: hidden;
-      clip-path: inset(50%); white-space: nowrap;
-    }
+    .watch{ padding: 3px 7px; gap: 4px; font-size: 12px; }
     .meta-line{ padding-top: 16px; }
   }
   @media (prefers-reduced-motion: reduce){ *{ transition: none !important; } }
@@ -327,6 +329,8 @@
   "use strict";
 
   var X = "https://x.com/nuance_official/status/";
+  var X_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
+    + '<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>';
 
   // 楽曲ごとにクレジットを集約。videos は同じ曲が映っている公演映像。
   var SONGS = [
@@ -578,7 +582,7 @@
             + (v.note ? '<span class="v-event" style="background:transparent;padding-inline:0;color:var(--ink-3)">' + esc(v.note) + "</span>" : "")
           + "</span>"
           + '<a class="watch" href="' + X + v.id + '" target="_blank" rel="noopener" aria-label="' + esc(fmtDate(v.d) + " " + (v.venue || "")) + " の映像をXで見る\">"
-            + '<span class="watch-text">Xで見る</span> ↗</a>'
+            + X_ICON + '<span class="watch-text">見る</span></a>'
           + "</div>";
       }).join("");
 
