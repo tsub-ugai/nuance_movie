@@ -15,52 +15,53 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A5%81%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
+  /* アクセントは Yokohama mint hall のブランドグリーン #0ba29a */
   :root{
-    --page:      #f7f7f5;
+    --page:      #f6f7f8;
     --surface:   #ffffff;
-    --ink:       #2f2c28;
-    --ink-2:     #575350;
-    --ink-3:     #8d8880;
-    --line:      #e9e7e2;
-    --line-2:    #f1efeb;
-    --hover:     #faf9f7;
-    --accent:    #e03b57;
-    --accent-2:  #b82a43;
-    --accent-bg: #fdeff2;
-    --chip-bg:   #f3f2ef;
-    --radius:    8px;
+    --ink:       #131820;
+    --ink-2:     #525c69;
+    --ink-3:     #8a94a1;
+    --line:      #e2e6ea;
+    --line-2:    #eef1f4;
+    --hover:     #f7f9fa;
+    --accent:    #0ba29a;
+    --accent-2:  #07827b;
+    --accent-bg: #e6f6f4;
+    --chip-bg:   #eef1f4;
+    --radius:    4px;
   }
   @media (prefers-color-scheme: dark){
     :root:not([data-theme="light"]){
-      --page:      #191918;
-      --surface:   #201f1e;
-      --ink:       #ecebe8;
-      --ink-2:     #b5b1aa;
-      --ink-3:     #8b8780;
-      --line:      #332f2c;
-      --line-2:    #2a2726;
-      --hover:     #262423;
-      --accent:    #ff7189;
-      --accent-2:  #ff96a7;
-      --accent-bg: #3a2126;
-      --chip-bg:   #2b2927;
+      --page:      #0f1216;
+      --surface:   #151a20;
+      --ink:       #e6eaef;
+      --ink-2:     #aab4c0;
+      --ink-3:     #7b8694;
+      --line:      #222a33;
+      --line-2:    #1c232b;
+      --hover:     #1a2027;
+      --accent:    #35c9bf;
+      --accent-2:  #63dbd2;
+      --accent-bg: #0f2b29;
+      --chip-bg:   #1e262f;
     }
   }
   :root[data-theme="dark"]{
-    --page:      #191918;
-    --surface:   #201f1e;
-    --ink:       #ecebe8;
-    --ink-2:     #b5b1aa;
-    --ink-3:     #8b8780;
-    --line:      #332f2c;
-    --line-2:    #2a2726;
-    --hover:     #262423;
-    --accent:    #ff7189;
-    --accent-2:  #ff96a7;
-    --accent-bg: #3a2126;
-    --chip-bg:   #2b2927;
+    --page:      #0f1216;
+    --surface:   #151a20;
+    --ink:       #e6eaef;
+    --ink-2:     #aab4c0;
+    --ink-3:     #7b8694;
+    --line:      #222a33;
+    --line-2:    #1c232b;
+    --hover:     #1a2027;
+    --accent:    #35c9bf;
+    --accent-2:  #63dbd2;
+    --accent-bg: #0f2b29;
+    --chip-bg:   #1e262f;
   }
 
   *{ box-sizing: border-box; }
@@ -79,14 +80,17 @@
   /* ===== masthead ===== */
   .masthead{ padding-block: 44px 26px; }
   .kicker{
-    font-size: 11px; font-weight: 700; letter-spacing: .14em; text-transform: uppercase;
-    color: var(--accent); margin: 0 0 10px;
+    font-size: 11px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase;
+    color: var(--ink-3); margin: 0 0 10px;
   }
   .masthead h1{
-    margin: 0; font-size: clamp(30px, 5vw, 42px); font-weight: 800; letter-spacing: -.01em;
+    margin: 0; font-size: clamp(30px, 5vw, 42px); font-weight: 800; letter-spacing: -.02em;
     line-height: 1.15; text-wrap: balance;
   }
-  .lede{ margin: 12px 0 0; color: var(--ink-2); font-size: 14.5px; line-height: 1.75; }
+  .masthead h1::after{
+    content: ""; display: block; width: 38px; height: 3px; background: var(--accent); margin-top: 14px;
+  }
+  .lede{ margin: 14px 0 0; color: var(--ink-2); font-size: 14.5px; line-height: 1.75; }
   .totals{
     display: flex; gap: 22px; margin-top: 22px; padding-top: 18px; border-top: 1px solid var(--line);
     flex-wrap: wrap;
@@ -120,7 +124,7 @@
     font: inherit; font-size: 13px; color: var(--ink); background-color: var(--surface);
     border: 1px solid var(--line); border-radius: var(--radius);
     padding: 9px 28px 9px 11px; appearance: none; cursor: pointer; max-width: 180px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238d8880' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%238a94a1' stroke-width='2.2' stroke-linecap='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
     background-repeat: no-repeat; background-position: right 9px center; background-size: 14px;
   }
   select:hover, .search input:hover{ border-color: var(--ink-3); }
@@ -139,7 +143,7 @@
   .chip{
     display: inline-flex; align-items: center; gap: 6px;
     font-size: 12px; font-weight: 600; color: var(--accent-2);
-    background: var(--accent-bg); border-radius: 999px; padding: 4px 6px 4px 11px;
+    background: var(--accent-bg); border-radius: var(--radius); padding: 4px 6px 4px 10px;
   }
   .chip button{
     all: unset; cursor: pointer; width: 16px; height: 16px; border-radius: 50%;
@@ -159,12 +163,14 @@
   }
   .song:last-child{ border-bottom: 1px solid var(--line); }
   .song-title{
-    font-size: 19px; font-weight: 700; letter-spacing: -.005em; line-height: 1.35; margin: 0 0 9px;
-    text-wrap: balance;
+    font-size: 19px; font-weight: 700; letter-spacing: -.015em; line-height: 1.35; margin: 0 0 9px;
+    text-wrap: balance; border-left: 3px solid var(--accent); padding-left: 11px;
   }
-  .credits{ display: flex; flex-direction: column; gap: 3px; }
+  .credits{ display: flex; flex-direction: column; gap: 3px; padding-left: 14px; }
   .credit{ display: flex; gap: 9px; font-size: 12.5px; align-items: baseline; }
-  .credit dt{ flex: 0 0 34px; color: var(--ink-3); font-weight: 500; }
+  .credit dt{
+    flex: 0 0 32px; color: var(--ink-3); font-weight: 700; font-size: 10px; letter-spacing: .1em;
+  }
   .credit dd{ margin: 0; }
   .link-btn{
     all: unset; cursor: pointer; color: var(--ink-2); font-weight: 500;
@@ -173,27 +179,28 @@
   .link-btn:hover{ color: var(--accent); border-bottom-color: color-mix(in srgb, var(--accent) 45%, transparent); }
   .song-note{ margin: 9px 0 0; font-size: 11.5px; color: var(--ink-3); line-height: 1.5; }
 
-  .videos{ display: flex; flex-direction: column; }
+  .videos{ display: flex; flex-direction: column; border-top: 1px solid var(--line-2); }
   .video{
     display: flex; align-items: center; gap: 12px; flex-wrap: nowrap;
-    padding: 8px 10px; margin-inline: -10px; border-radius: var(--radius);
+    padding: 10px 0; border-bottom: 1px solid var(--line-2);
     font-size: 13px;
   }
   .video:hover{ background: var(--hover); }
   .v-date{
-    flex: 0 0 auto; font-variant-numeric: tabular-nums; color: var(--ink-3); font-size: 12.5px;
+    flex: 0 0 auto; font-family: 'IBM Plex Mono', ui-monospace, monospace;
+    font-variant-numeric: tabular-nums; color: var(--ink-3); font-size: 12px;
     min-width: 88px;
   }
   .v-place{ flex: 1 1 auto; display: flex; flex-wrap: wrap; gap: 4px 8px; align-items: baseline; min-width: 0; }
   .v-venue{ font-weight: 600; }
   .v-event{
-    font-size: 11.5px; color: var(--ink-2); background: var(--chip-bg);
-    padding: 2px 8px; border-radius: 999px; font-weight: 500;
+    font-size: 11.5px; color: var(--ink-2); background: transparent;
+    border: 1px solid var(--line); padding: 1px 7px; border-radius: 3px; font-weight: 500;
   }
-  .v-event:hover{ background: var(--accent-bg); color: var(--accent-2); }
+  .v-event:hover{ border-color: var(--accent); color: var(--accent-2); }
   .watch{
     flex: 0 0 auto; margin-left: auto; display: inline-grid; place-items: center;
-    width: 28px; height: 28px; border-radius: 50%;
+    width: 27px; height: 27px; border-radius: var(--radius);
     color: var(--accent); text-decoration: none;
     border: 1px solid var(--line); background: var(--surface);
   }
@@ -232,7 +239,7 @@
       background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius);
       padding: 9px 12px; cursor: pointer; white-space: nowrap;
     }
-    .filter-toggle[aria-expanded="true"]{ background: var(--ink); color: var(--page); border-color: var(--ink); }
+    .filter-toggle[aria-expanded="true"]{ background: var(--accent); color: #fff; border-color: var(--accent); }
     .filter-toggle .badge{
       min-width: 17px; height: 17px; padding-inline: 4px; border-radius: 999px;
       background: var(--accent); color: #fff; font-size: 11px; font-weight: 700;
@@ -568,9 +575,9 @@
     list.innerHTML = visible.map(function(g){
       var s = g.song;
       var credits = "";
-      credits += creditRow("作詞", s.ly, "ly");
-      credits += creditRow("作曲", s.co, "co");
-      credits += creditRow("編曲", s.ar, "ar");
+      credits += creditRow("詞", s.ly, "ly");
+      credits += creditRow("曲", s.co, "co");
+      credits += creditRow("編", s.ar, "ar");
       credits += creditRow("振付", s.ch, "ch");
       if (s.extra) credits += '<div class="credit"><dt>その他</dt><dd>' + esc(s.extra) + "</dd></div>";
 
