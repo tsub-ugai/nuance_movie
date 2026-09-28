@@ -166,6 +166,11 @@
     font-size: 19px; font-weight: 700; letter-spacing: -.015em; line-height: 1.35; margin: 0 0 9px;
     text-wrap: balance; border-left: 3px solid var(--accent); padding-left: 11px;
   }
+  .cover-tag{
+    display: inline-block; vertical-align: middle; margin-left: 8px;
+    font-size: 10px; font-weight: 700; letter-spacing: .06em; color: var(--ink-3);
+    border: 1px solid var(--line); border-radius: 3px; padding: 1px 6px; white-space: nowrap;
+  }
   .credits{ display: flex; flex-direction: column; gap: 3px; padding-left: 14px; }
   .credit{ display: flex; gap: 9px; font-size: 12.5px; align-items: baseline; }
   .credit dt{
@@ -337,6 +342,15 @@
 
   // 楽曲ごとにクレジットを集約。videos は同じ曲が映っている公演映像。
   var SONGS = [
+    { t:"トロピカルサマー", ly:"佐藤嘉風", co:"佐藤嘉風", videos:[
+      { d:"2026-09-27", venue:"姫路HOP THEATRE", event:"TOUR -hike- 姫路編", id:"2104579383801295000" }
+    ]},
+    { t:"SKUMSCAMSCUM", ly:"印象派（INSHOW-HA）", co:"印象派（INSHOW-HA）", cover:"AQ", videos:[
+      { d:"2026-09-26", venue:"京都ROKA", event:"TOUR -hike- 京都編 lunch", id:"2103856883035734221" }
+    ]},
+    { t:"桃源京", ly:"ハンサムケンヤ", co:"ハンサムケンヤ", cover:"きのホ。", videos:[
+      { d:"2026-09-26", venue:"京都ROKA", event:"TOUR -hike- 京都編 dinner", id:"2103856297078907307" }
+    ]},
     { t:"泡沫", ly:"月丘憐", co:"sayshine", ch:"川井わか",
       note:"2023年11月の投稿では作詞が「AMEBA（クロスノエシス）」と表記されていた。", videos:[
       { d:"2026-09-21", venue:"新宿LOFT", event:"エクストロメ UN RECIÉN LLEGADO", id:"2102020026819842359" },
@@ -392,6 +406,7 @@
       { d:"2025-11-11", venue:"高円寺HIGH", event:"永久番線", id:"1988822363903762517" }
     ]},
     { t:"ルカルカ", ly:"オレノグラフィティ", co:"オレノグラフィティ", videos:[
+      { d:"2026-09-23", venue:"新宿MARZ", event:"3PEACE BANDSET LIVE “solid”", id:"2102962395828425187" },
       { d:"2026-07-26", venue:"WWWX", event:"MAVERICK 2", id:"2081700173953245629" }
     ]},
     { t:"シャラララシャララ", ly:"佐藤嘉風", co:"佐藤嘉風", videos:[
@@ -426,6 +441,7 @@
       { d:"2025-10-02", venue:"shibuya QUATTRO", event:"", id:"1975043533406130445" }
     ]},
     { t:"sanzan", ly:"森尻有希子（yukiko／miyumiyu）", co:"森尻有希子（yukiko／miyumiyu）", ar:"佐藤嘉風", videos:[
+      { d:"2026-09-23", venue:"新宿MARZ", event:"3PEACE BANDSET LIVE “solid”", id:"2103104510222889427" },
       { d:"2025-10-02", venue:"shibuya QUATTRO", event:"", id:"1974474591113486738" },
       { d:"2025-06-07", venue:"新宿MARZ", event:"", id:"1932104588230000758" }
     ]},
@@ -596,7 +612,9 @@
 
       return '<article class="song">'
         + "<div>"
-          + '<h2 class="song-title">' + esc(s.t) + "</h2>"
+          + '<h2 class="song-title">' + esc(s.t)
+            + (s.cover ? '<span class="cover-tag">' + esc(s.cover) + " カバー</span>" : "")
+          + "</h2>"
           + '<dl class="credits">' + credits + "</dl>"
           + (s.note ? '<p class="song-note">※ ' + esc(s.note) + "</p>" : "")
         + "</div>"
