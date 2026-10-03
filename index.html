@@ -203,14 +203,19 @@
     border: 1px solid var(--line); padding: 1px 7px; border-radius: 3px; font-weight: 500;
   }
   .v-event:hover{ border-color: var(--accent); color: var(--accent-2); }
+  .links{ flex: 0 0 auto; margin-left: auto; display: flex; gap: 6px; }
   .watch{
-    flex: 0 0 auto; margin-left: auto; display: inline-grid; place-items: center;
+    flex: 0 0 auto; display: inline-grid; place-items: center;
     width: 27px; height: 27px; border-radius: var(--radius);
     color: var(--accent); text-decoration: none;
     border: 1px solid var(--line); background: var(--surface);
   }
   .watch svg{ width: 12px; height: 12px; fill: currentColor; }
   .watch:hover{ background: var(--accent); border-color: var(--accent); color: #fff; }
+  /* YouTube版がある映像用。Xボタンの隣に並ぶ */
+  .watch.yt{ color: #e62117; }
+  .watch.yt svg{ width: 14px; height: 14px; }
+  .watch.yt:hover{ background: #e62117; border-color: #e62117; color: #fff; }
 
   .empty{
     text-align: center; padding: 70px 20px; color: var(--ink-3);
@@ -339,6 +344,11 @@
   var X = "https://x.com/nuance_official/status/";
   var X_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
     + '<path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>';
+  var YT_ICON = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">'
+    + '<path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505'
+    + 'A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136'
+    + 'c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12'
+    + 's0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>';
 
   // 楽曲ごとにクレジットを集約。videos は同じ曲が映っている公演映像。
   var SONGS = [
@@ -347,13 +357,13 @@
         { k:"作", v:"寺田寛明" },
         { k:"出演", v:"NUANCE / 寺田寛明 / 警備員 / ミネ" }
       ], videos:[
-      { d:"2026-09-19", venue:"yokohama mint hall", event:"TOUR -hike- 横浜編「さよなら mint hall」", id:"2105976087201427951", note:"YouTube版あり" }
+      { d:"2026-09-19", venue:"yokohama mint hall", event:"TOUR -hike- 横浜編「さよなら mint hall」", id:"2105976087201427951", yt:"26a2qYgEqAU" }
     ]},
     { t:"5人漫才", kind:"漫才", credits:[
         { k:"作", v:"寺田寛明" },
         { k:"出演", v:"NUANCE / ミネ" }
       ], videos:[
-      { d:"2026-09-19", venue:"yokohama mint hall", event:"TOUR -hike- 横浜編「さよなら mint hall」", id:"2105515263693398247", note:"YouTube版あり" }
+      { d:"2026-09-19", venue:"yokohama mint hall", event:"TOUR -hike- 横浜編「さよなら mint hall」", id:"2105515263693398247", yt:"Jlxfsq3WuVg" }
     ]},
     { t:"トロピカルサマー", ly:"佐藤嘉風", co:"佐藤嘉風", videos:[
       { d:"2026-09-27", venue:"姫路HOP THEATRE", event:"TOUR -hike- 姫路編", id:"2104579383801295000" }
@@ -379,7 +389,7 @@
     { t:"ハレンチベイベ", ly:"漣研太郎（ピストルモンキー（ズ））", co:"漣研太郎（ピストルモンキー（ズ））", ar:"炭竃智弘", videos:[
       { d:"2026-09-10", venue:"下北沢シャングリラ", event:"Creora", id:"2100421986631680491" },
       { d:"2026-08-11", venue:"SHIBUYA CYCLONE", event:"ヌュナッス", id:"2087185246047613297" },
-      { d:"2026-06-25", venue:"新宿MARZ", event:"RTNY15", id:"2070443674346135853" }
+      { d:"2026-06-25", venue:"新宿MARZ", event:"RTNY15", id:"2070443674346135853", yt:"9zVMlYO2RJY" }
     ]},
     { t:"highlight", ly:"森尻有希子（yukiko／miyumiyu）", co:"森尻有希子（yukiko／miyumiyu）", ar:"佐藤嘉風", videos:[
       { d:"2026-09-10", venue:"下北沢シャングリラ", event:"Creora", id:"2100234502282838035" },
@@ -412,7 +422,7 @@
       { d:"2025-10-25", venue:"新宿MARZ", event:"RTNY 6.5", id:"1982688714905260065" }
     ]},
     { t:"ラ・ブ・ミ・ラ・コ", ly:"宮嶋淳子", co:"炭竃智弘", ch:"Μёg", extra:"guitar：松葉由行", videos:[
-      { d:"2026-07-22", venue:"新宿MARZ", event:"RTNY16", id:"2080261646459568470", note:"YouTube版 LIVE MOVIE へのリンク付き" }
+      { d:"2026-07-22", venue:"新宿MARZ", event:"RTNY16", id:"2080261646459568470", yt:"e5wrHDCk73k", note:"YouTube版は LIVE MOVIE" }
     ]},
     { t:"bund drive", ly:"佐藤嘉風", co:"佐藤嘉風", videos:[
       { d:"2026-07-22", venue:"新宿MARZ", event:"RTNY16", id:"2081741399108509908" },
@@ -627,8 +637,14 @@
             + (v.event ? '<button class="link-btn v-event" data-key="event" data-value="' + esc(v.event) + '">' + esc(v.event) + "</button>" : "")
             + (v.note ? '<span class="v-event" style="background:transparent;padding-inline:0;color:var(--ink-3)">' + esc(v.note) + "</span>" : "")
           + "</span>"
-          + '<a class="watch" href="' + X + v.id + '" target="_blank" rel="noopener" aria-label="' + esc(fmtDate(v.d) + " " + (v.venue || "")) + " の映像をXで見る\">"
-            + X_ICON + "</a>"
+          + '<span class="links">'
+            + '<a class="watch" href="' + X + v.id + '" target="_blank" rel="noopener" aria-label="'
+              + esc(fmtDate(v.d) + " " + (v.venue || "")) + ' の映像をXで見る">' + X_ICON + "</a>"
+            + (v.yt
+                ? '<a class="watch yt" href="https://youtu.be/' + esc(v.yt) + '" target="_blank" rel="noopener" aria-label="'
+                  + esc(fmtDate(v.d) + " " + (v.venue || "")) + ' の映像をYouTubeで見る">' + YT_ICON + "</a>"
+                : "")
+          + "</span>"
           + "</div>";
       }).join("");
 
