@@ -342,6 +342,13 @@
 
   // 楽曲ごとにクレジットを集約。videos は同じ曲が映っている公演映像。
   var SONGS = [
+    // 楽曲以外（コント等）は ly/co の代わりに credits:[{k,v}] を使い、kind でラベルを出す
+    { t:"既浜", kind:"コント", credits:[
+        { k:"作", v:"寺田寛明" },
+        { k:"出演", v:"NUANCE / 寺田寛明 / 警備員 / ミネ" }
+      ], videos:[
+      { d:"2026-09-19", venue:"yokohama mint hall", event:"TOUR -hike- 横浜編「さよなら mint hall」", id:"2105976087201427951", note:"YouTube版あり" }
+    ]},
     { t:"トロピカルサマー", ly:"佐藤嘉風", co:"佐藤嘉風", videos:[
       { d:"2026-09-27", venue:"姫路HOP THEATRE", event:"TOUR -hike- 姫路編", id:"2104579383801295000" }
     ]},
@@ -543,7 +550,9 @@
       });
       if (!songOk) return;
 
-      var songHay = [song.t, song.ly, song.co, song.ar, song.ch, song.extra].join(" ").toLowerCase();
+      var songHay = [song.t, song.ly, song.co, song.ar, song.ch, song.extra, song.kind,
+        (song.credits || []).map(function(c){ return c.k + " " + c.v; }).join(" ")
+      ].join(" ").toLowerCase();
       var songHit = q ? songHay.indexOf(q) !== -1 : true;
 
       var vids = song.videos.filter(function(v){
@@ -592,6 +601,12 @@
     list.innerHTML = visible.map(function(g){
       var s = g.song;
       var credits = "";
+      if (s.credits){
+        // 楽曲以外（コント等）の自由記述クレジット。絞り込み対象にはしない
+        credits += s.credits.map(function(c){
+          return '<div class="credit"><dt>' + esc(c.k) + "</dt><dd>" + esc(c.v) + "</dd></div>";
+        }).join("");
+      }
       credits += creditRow("詞", s.ly, "ly");
       credits += creditRow("曲", s.co, "co");
       credits += creditRow("編", s.ar, "ar");
@@ -615,6 +630,7 @@
         + "<div>"
           + '<h2 class="song-title">' + esc(s.t)
             + (s.cover ? '<span class="cover-tag">' + esc(s.cover) + " カバー</span>" : "")
+            + (s.kind ? '<span class="cover-tag">' + esc(s.kind) + "</span>" : "")
           + "</h2>"
           + '<dl class="credits">' + credits + "</dl>"
           + (s.note ? '<p class="song-note">※ ' + esc(s.note) + "</p>" : "")
